@@ -1,0 +1,21 @@
+FreedomTimer.js Changelog
+
+v0.2 (26-10-2013)
+
+New Features:
+	Allow for a collection of items e.g ('.class')
+
+
+Bug Fixes:
+	Creating multiple instances of freedomTimer is fixed
+
+v0.1
+
+Initial version. 
+
+Features:
+	FreedomTimer.js has three built in display formats, 'short', 'long' and 'digital'.
+	It also supports a custom display string. 
+	You can also set the time up message.
+	FreedomTimer.js is also built in an easy to customise way, each unit of time as it own class making it easy to target and style the countdown.
+	jQuery compatible

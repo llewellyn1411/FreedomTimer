@@ -2,50 +2,43 @@
 	FreedomTimer.js
 	Developed by Llewellyn Collins
 	http://nl2bryourmind.co.za/
-	version 0.1
+	version 0.2
 */
 (function ($) {
 	//set private variables
-	var _options,
-		_timeTo,
-		_now,
-		_config,
-		_timerId,
-		_elem,
-		_strings = {
-			modes: {
-				'SHORT': 'short',
-				'LONG': 'long',
-				'DIGITAL': 'digital',
-				'CUSTOM': 'custom'
-			},
-			messages: {
-				'PAST': 'This date has past'
-			}
-		};
+	var _strings = {
+		modes: {
+			'SHORT': 'short',
+			'LONG': 'long',
+			'DIGITAL': 'digital',
+			'CUSTOM': 'custom'
+		},
+		messages: {
+			'PAST': 'This date has past'
+		}
+	};
 
 	//constructor
 	$.fn.freedomTimer = function (config) {
-		//extend default config
-		_config = $.extend({}, $.fn.freedomTimer.defaults, config);;
+		//allow for collection of items and return for chaining
+		return this.each(function () {
+			//cache this as a jQuery object
+			that = $(this);
+			//extend default config
+			that._config = $.extend({}, $.fn.freedomTimer.defaults, config);;
 
-		//set _now and _timeTo dates
-		_timeTo = _getDateObj(new Date(_config.dateTo));
-		_now = _getDateObj(new Date());
+			//set that._now and that._timeTo dates
+			that._timeTo = _getDateObj(new Date(that._config.dateTo));
+			that._now = _getDateObj(new Date());
 
-		//make this global
-		_elem = this;
+			//update view with that as the context
+			_update.call(that);
 
-		//update view
-		_update();
-
-		//start interval
-		_timerId = setInterval(function () {
-			return _update();
-		}, 1000);
-
-		//return this for chaining
-		return this;
+			//start interval with this as the context
+			that._timerId = setInterval(function (self) {
+				return _update.call(self);
+			}, 1000, that);
+		});
 	};
 
 	//returns a date object
@@ -134,8 +127,8 @@
 			seconds = 0,
 			hasPast = true;
 
-		_now = _getDateObj(new Date());
-		seconds = (_timeTo.time - _now.time) / 1000;
+		this._now = _getDateObj(new Date());
+		seconds = (this._timeTo.time - this._now.time) / 1000;
 		if (seconds > 0) {
 			hasPast = false;
 			years = Math.floor(seconds / 365 / 12 / 7 / 24 / 60 / 60);
@@ -185,7 +178,7 @@
 	//updates the view
 
 	function _update() {
-		var timeLeft = _getDateDifference();
+		var timeLeft = _getDateDifference.call(this);
 		if (!timeLeft.hasPast) {
 			var html,
 				years = timeLeft.years,
@@ -196,7 +189,7 @@
 				minutes = timeLeft.minutes,
 				seconds = timeLeft.seconds;
 
-			switch (_config.mode) {
+			switch (this._config.mode) {
 			case _strings.modes.SHORT:
 				html = _showYear(years, ' Y') + ' ' + _showMonth(months, ' M') + ' ' + _showWeek(weeks, ' W') + ' ' + _showDay(days, ' D') + ' ' + _showHour(hours, ' H') + ' ' + _showMinute(minutes, ' M') + ' ' + _showSecond(seconds, ' S');
 				break;
@@ -208,7 +201,7 @@
 				break;
 			case _strings.modes.CUSTOM:
 				if (config.timeString) {
-					var timeString = _config.timeString;
+					var timeString = this._config.timeString;
 					timeString = timeString.replace(/%Y/g, _showYear(years, ''));
 					timeString = timeString.replace(/%M/g, _showMonth(months, ''));
 					timeString = timeString.replace(/%W/g, _showWeek(weeks, ''));
@@ -220,9 +213,9 @@
 				}
 				break;
 			}
-			_elem.html(html);
+			this.html(html);
 		} else {
-			_elem.html(_config.pastMessage);
+			this.html(this._config.pastMessage);
 		}
 	};
 
