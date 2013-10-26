@@ -200,7 +200,7 @@
 				html = _showYear(years, ':') + _showMonth(months, ':') + _showWeek(weeks, ':') + _showDay(days, ':') + _showHour(hours, ':') + _showMinute(minutes, ':') + _showSecond(seconds, '');
 				break;
 			case _strings.modes.CUSTOM:
-				if (config.timeString) {
+				if (this._config.timeString) {
 					var timeString = this._config.timeString;
 					timeString = timeString.replace(/%Y/g, _showYear(years, ''));
 					timeString = timeString.replace(/%M/g, _showMonth(months, ''));
