@@ -131,13 +131,13 @@
 		seconds = (this._timeTo.time - this._now.time) / 1000;
 		if (seconds > 0) {
 			hasPast = false;
-			years = Math.floor(seconds / 365 / 12 / 7 / 24 / 60 / 60);
+			years = Math.floor(seconds / 12 / 4 / 7 / 24 / 60 / 60);
 			if (years > 0) {
-				seconds -= years * 365 * 7 * 24 * 60 * 60;
+				seconds -= years * 12 * 4 * 7 * 24 * 60 * 60;
 			}
-			months = Math.floor(seconds / 12 / 7 / 24 / 60 / 60);
+			months = Math.floor(seconds / 4 / 7 / 24 / 60 / 60);
 			if (months > 0) {
-				seconds -= months * 7 * 24 * 60 * 60;
+				seconds -= months * 4 * 7 * 24 * 60 * 60;
 			}
 			weeks = Math.floor(seconds / 7 / 24 / 60 / 60);
 			if (weeks > 0) {
@@ -150,10 +150,16 @@
 			hours = Math.floor(seconds / 60 / 60);
 			if (hours > 0) {
 				seconds -= hours * 60 * 60;
+				if(hours < 10){
+					hours = "0" + hours;
+				}
 			}
 			minutes = Math.floor(seconds / 60);
 			if (minutes) {
 				seconds -= minutes * 60;
+				if(minutes < 10){
+					minutes = "0" + minutes;
+				}
 			}
 			seconds = Math.floor(seconds);
 			if (seconds < 10) {
